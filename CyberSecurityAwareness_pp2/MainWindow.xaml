@@ -139,7 +139,7 @@
                 </Border>
 
             </StackPanel>
-        </Grid>
+        </Grid><!-- end of username grid-->
 
         <!-- CHAT PAGE -->
         <Grid x:Name="chats_grid" Visibility="Hidden">
@@ -186,7 +186,7 @@
                                FontSize="13"
                                Foreground="#58A6FF"
                                VerticalAlignment="Center"/>
-                </Grid>
+                </Grid><!-- end of chat page-->
             </Border>
 
             <!-- Chat ListView -->
@@ -237,11 +237,11 @@
                             Height="44"
                             Width="100"
                             Click="send"/>
-                </Grid>
+                </Grid><!-- end of input bar grid -->
             </Border>
 
         </Grid>
 
 
-    </Grid>
+    </Grid><!-- end of parent grid -->
 </Window>
