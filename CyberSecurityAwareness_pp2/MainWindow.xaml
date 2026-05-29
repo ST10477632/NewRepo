@@ -186,7 +186,8 @@
                                FontSize="13"
                                Foreground="#58A6FF"
                                VerticalAlignment="Center"/>
-                </Grid><!-- end of chat page-->
+                </Grid>
+                <!-- end of chat page-->
             </Border>
 
             <!-- Chat ListView -->
@@ -220,6 +221,7 @@
                     BorderBrush="#21262D"
                     BorderThickness="0,1,0,0"
                     Padding="16,12">
+
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -235,13 +237,21 @@
                     <Button Grid.Column="1"
                             Content="Send ➤"
                             Height="44"
-                            Width="100"
+                            Width="50"
+                            Margin="0,0,60,0"
                             Click="send"/>
-                </Grid><!-- end of input bar grid -->
+
+                    <Button Grid.Column="2"
+                            Content="Exit"
+                            Height="44"
+                            Width="50"
+                            Margin="50,0,0,0"
+                            Style="{StaticResource PrimaryButton}"
+                            Click="exit"/>
+
+                </Grid>
+                <!-- end of input bar grid -->
             </Border>
-
         </Grid>
-
-
     </Grid><!-- end of parent grid -->
 </Window>

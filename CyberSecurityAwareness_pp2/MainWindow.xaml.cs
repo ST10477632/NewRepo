@@ -411,6 +411,13 @@ namespace CyberSecurityAwareness_pp2
             File.AppendAllText(UsersFile, name.Trim() + "\n");
         }//end of savename method
 
+        private void exit(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to exit CyberSafe AI?", "Exit Application", MessageBoxButton.YesNo, MessageBoxImage.Question); if (result == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
+        }
     }//end of class
 }//end of namespace
 
