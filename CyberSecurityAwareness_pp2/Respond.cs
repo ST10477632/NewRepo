@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace CyberSecurityAwareness_pp2
 {
-    internal class Respond
+    public class Respond
     {
         // Random number generator
         private readonly Random _rng = new Random();
@@ -43,22 +44,31 @@ namespace CyberSecurityAwareness_pp2
         public string MatchKeyword(string input, out string matchedTopic)
         {
             matchedTopic = string.Empty;
+            string lowerInput = input.ToLower();
 
-            string[] words = input.ToLower().Split(
-                new[] { ' ', ',', '.', '?', '!' },
+            // Pass 1: full phrase match first
+            foreach (var entry in _responses)
+            {
+                if (lowerInput.Contains(entry.Key.ToLower()))
+                {
+                    matchedTopic = entry.Key;
+                    return PickRandom(entry.Value);
+                }
+            }
+
+            // Pass 2: exact single word match only
+            string[] words = lowerInput.Split(
+                new[] { ' ', ',', '.', '?', '!', '\n', '\r' },
                 StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string word in words)
             {
                 if (_stopWords.Contains(word)) continue;
 
-                foreach (var entry in _responses)
+                if (_responses.ContainsKey(word))
                 {
-                    if (input.Contains(entry.Key) || entry.Key.Contains(word))
-                    {
-                        matchedTopic = entry.Key;
-                        return PickRandom(entry.Value);
-                    }
+                    matchedTopic = word;
+                    return PickRandom(_responses[word]);
                 }
             }
 
@@ -76,9 +86,14 @@ namespace CyberSecurityAwareness_pp2
         // Check input for sentiment words and return empathetic reply
         public string DetectSentiment(string input)
         {
+            string lowerInput = input.ToLower();
+
             foreach (var entry in _sentiments)
-                if (input.Contains(entry.Key))
+            {
+                if (lowerInput.Contains(entry.Key.ToLower()))
                     return PickRandom(entry.Value);
+            }
+
             return string.Empty;
         }
 
@@ -110,10 +125,50 @@ namespace CyberSecurityAwareness_pp2
                 "Hey! Ask me anything about online safety.",
                 "Hi there! I'm here to help you stay secure online.");
 
-            Add("hi",
-                "Hi! What can I help you with today?",
-                "Hello! Ask me about passwords, phishing, malware — anything cybersecurity!",
-                "Hey! Great to see you. What's on your mind?");
+            Add("how are you",
+                "I'm doing great, thanks for asking! Ready to help you stay safe online.",
+                "All systems running! How can I assist you with cybersecurity today?",
+                "Doing well! What cybersecurity topic can I help you with?");
+
+            Add("help",
+                "I can help with topics like passwords, phishing, malware, VPNs, firewalls, and more. Just ask!",
+                "Try asking me about scams, data breaches, privacy, or online safety tips.",
+                "I'm here to guide you on cybersecurity. What topic would you like to explore?");
+
+            Add("ransomware",
+                "Ransomware encrypts your files and demands payment — never pay, it doesn't guarantee recovery.",
+                "Regular offline backups are the best defence against ransomware attacks.",
+                "Keep your operating system and antivirus updated to reduce ransomware risk.");
+
+            Add("antivirus",
+                "Install a reputable antivirus program and keep it updated at all times.",
+                "Run regular scans to detect threats that may have slipped through.",
+                "Antivirus alone isn't enough — combine it with safe browsing habits.");
+
+            Add("wifi",
+                "Avoid using public Wi-Fi for sensitive activities like banking or shopping.",
+                "Use a VPN on public Wi-Fi to encrypt your connection.",
+                "Make sure your home Wi-Fi uses WPA3 or WPA2 encryption.");
+
+            Add("identity theft",
+                "Protect your ID number, banking details, and personal information carefully.",
+                "Monitor your credit report regularly for accounts you did not open.",
+                "Freeze your credit with bureaus if you suspect your identity has been stolen.");
+
+            Add("authentication",
+                "Strong authentication combines something you know, have, and are.",
+                "Enable multi-factor authentication wherever possible for stronger account security.",
+                "Avoid using the same authentication method across all accounts.");
+
+            Add("safe browsing",
+                "Stick to HTTPS websites and look for the padlock icon in your browser.",
+                "Keep your browser and extensions updated to patch security vulnerabilities.",
+                "Use a reputable ad blocker to reduce exposure to malicious advertisements.");
+
+            Add("tips",
+                "Use strong unique passwords, enable 2FA, and keep software updated.",
+                "Be cautious of phishing emails, public Wi-Fi, and suspicious links.",
+                "Back up your data regularly and use a reputable antivirus program.");
 
             Add("purpose",
                 "My purpose is to educate you on how to stay safe online.",
@@ -167,16 +222,6 @@ namespace CyberSecurityAwareness_pp2
                 "Choose a reputable, no-logs VPN provider.",
                 "A VPN protects your data in transit but doesn't make you fully anonymous online.");
 
-            Add("two factor",
-                "Two-factor authentication (2FA) adds an extra layer of security beyond your password.",
-                "Enable 2FA on all important accounts — it stops attackers even if your password is stolen.",
-                "Use an authenticator app rather than SMS for stronger 2FA protection.");
-
-            Add("2fa",
-                "2FA requires a second verification step, making it much harder for attackers to access your accounts.",
-                "Even if your password leaks, 2FA can prevent unauthorised login.",
-                "Set up 2FA on email, banking, and social media accounts as a priority.");
-
             Add("hacked",
                 "If your account is hacked, change your password immediately and log out of all devices.",
                 "Contact the platform's support team if you suspect your account has been compromised.",
@@ -193,21 +238,7 @@ namespace CyberSecurityAwareness_pp2
                 "Social engineering manipulates people into revealing confidential information.",
                 "Attackers may impersonate IT support or authority figures to gain your trust.",
                 "Always verify a caller's identity through an official channel before sharing anything.");
-
-            Add("data breach",
-                "A data breach exposes sensitive information — change passwords for affected accounts immediately.",
-                "Use HaveIBeenPwned to check whether your email has appeared in a known breach.",
-                "After a breach, monitor your credit report for signs of identity theft.");
-
-            Add("encryption",
-                "Encryption scrambles your data so only authorised parties can read it.",
-                "Always use HTTPS websites — the padlock icon means your connection is encrypted.",
-                "Encrypt sensitive files on your device to protect them if it is lost or stolen.");
-
-            Add("backup",
-                "Back up your important data using the 3-2-1 rule: 3 copies, 2 different media, 1 offsite.",
-                "Cloud backups protect you from ransomware and hardware failure.",
-                "Test your backups periodically to make sure they can actually be restored.");
+ 
 
             Add("update",
                 "Keep your software and operating system updated — patches fix known security vulnerabilities.",
