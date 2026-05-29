@@ -37,6 +37,12 @@ namespace CyberSecurityAwareness_pp2
             InitializeComponent();
             EnsureFiles();
 
+            // ✅ Play voice greeting when the app opens
+            PlayVoiceGreeting();
+
+            // ✅ Show ASCII art in the chat on startup
+            DisplayAsciiArt();
+
         }
         // Make sure storage files exist
         private void EnsureFiles()
@@ -46,6 +52,94 @@ namespace CyberSecurityAwareness_pp2
 
             if (!File.Exists(InterestsFile))
                 File.WriteAllText(InterestsFile, string.Empty);
+        }
+
+        // ── VOICE GREETING ────────────────────────────────────────────────
+
+        private void PlayVoiceGreeting()
+        {
+            // Get the project root folder (two levels up from \bin\Debug)
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string projectRoot = System.IO.Path.GetFullPath(
+                                       System.IO.Path.Combine(baseDirectory, @"..\..\"));
+            string voiceFile = System.IO.Path.Combine(projectRoot, "george.wav");
+
+            // ✅ Actually call PlayVoice with the resolved path
+            PlayVoice(voiceFile);
+        }
+
+        public static void PlayVoice(string voice)
+        {
+            try
+            {
+                if (!File.Exists(voice))
+                {
+                    MessageBox.Show(
+                        "Voice file not found at:\n" + voice +
+                        "\n\nMake sure george.wav is in the project root folder.",
+                        "CyberSafe AI – Audio",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
+                using (SoundPlayer player = new SoundPlayer(voice))
+                {
+                    player.Load();
+                    player.Play(); // ✅ Use Play() instead of PlaySync() so the UI doesn't freeze
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Audio error: " + ex.Message,
+                                "CyberSafe AI – Audio",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+            }
+        }
+
+        // ── ASCII ART ─────────────────────────────────────────────────────
+
+        private void DisplayAsciiArt()
+        {
+            // ✅ Show in the chat ListView instead of Console.WriteLine
+            string art =
+                "==================================================\n" +
+                "   ____       _                 _   _            \n" +
+                "  / ___|  ___| |__   ___   ___ | |_(_) ___  _ __ \n" +
+                "  \\___ \\ / __| '_ \\ / _ \\ / _ \\| __| |/ _ \\| '_ \\\n" +
+                "   ___) | (__| | | | (_) | (_) | |_| | (_) | | | |\n" +
+                "  |____/ \\___|_| |_|\\___/ \\___/ \\__|_|\\___/|_| |_|\n" +
+                "\n" +
+                "   ****** CYBERSECURITY AWARENESS BOT ******\n" +
+                "==================================================";
+
+            AddAsciiArtBubble(art);
+        }
+
+        // Special bubble for ASCII art — uses a monospace font so the art aligns correctly
+        private void AddAsciiArtBubble(string art)
+        {
+            var border = new Border
+            {
+                Background = new SolidColorBrush(Color.FromRgb(13, 17, 23)),
+                CornerRadius = new CornerRadius(10),
+                Padding = new Thickness(16, 12, 16, 12),
+                Margin = new Thickness(0, 8, 0, 8),
+                BorderBrush = new SolidColorBrush(Color.FromRgb(0, 200, 150)),
+                BorderThickness = new Thickness(1)
+            };
+
+            border.Child = new TextBlock
+            {
+                Text = art,
+                FontFamily = new FontFamily("Courier New"),  // ✅ Monospace so ASCII art aligns
+                FontSize = 11,
+                Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 150)),
+                TextWrapping = TextWrapping.NoWrap
+            };
+
+            chats.Items.Add(border);
         }
 
         // ── USERNAME PAGE ────────────────────────────────────────────────
@@ -93,52 +187,8 @@ namespace CyberSecurityAwareness_pp2
             if (returning)
                 RecallInterests();
         }
+
         
-        private void PlayVoiceGreeting()
-        {
-            string path_directory = AppDomain.CurrentDomain.BaseDirectory;
-            Console.WriteLine($"{path_directory}");
-            string recordPath = path_directory.Replace("\\bin\\Debug", "");
-            string voiceFile = System.IO.Path.Combine(recordPath, "george.wav");
-
-            
-        }
-        public static void PlayVoice(string voice)
-        {
-            try
-            {
-                if (!File.Exists(voice))
-                {
-                    Console.WriteLine("george.wav file not found.");
-                    return;
-                }
-
-                using (SoundPlayer speechObj = new SoundPlayer(voice))
-                {
-                    speechObj.Load();
-                    speechObj.PlaySync();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Audio error: " + e.Message);
-            }
-        }
-
-        private void DisplayAsciiArt()
-        {
-            Console.WriteLine(@"
-            ==================================================
-               ____       _                 _   _             
-              / ___|  ___| |__   ___   ___ | |_(_) ___  _ __  
-              \___ \ / __| '_ \ / _ \ / _ \| __| |/ _ \| '_ \ 
-               ___) | (__| | | | (_) | (_) | |_| | (_) | | | |
-              |____/ \___|_| |_|\___/ \___/ \__|_|\___/|_| |_|
-
-                ****** CYBERSECURITY AWARENESS BOT ******
-            ==================================================");
-        }
-
         // ── CHAT PAGE ────────────────────────────────────────────────────
 
         // Allow Enter key to send message
