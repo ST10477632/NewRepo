@@ -1,400 +1,208 @@
 # NewRepo
-# 🛡️ CyberSafe AI – Cybersecurity Awareness Chatbot
+# # CyberSafe AI – Cybersecurity Awareness Chatbot
 
 ## Overview
 
-**CyberSafe AI** is a desktop chatbot application built using **C# and WPF (Windows Presentation Foundation)**. The chatbot is designed to educate users about **cybersecurity awareness**, helping them learn how to stay safe online through interactive conversations.
+CyberSafe AI is a WPF-based cybersecurity awareness chatbot developed in C#.
+The application helps users learn about online safety, cybersecurity threats, and protection methods through an interactive chat interface.
 
-The application provides guidance on cybersecurity topics such as:
+The chatbot provides:
 
-* Password safety
-* Phishing attacks
-* Malware
-* Firewalls
-* VPNs
-* Two-Factor Authentication (2FA)
-* Data breaches
-* Privacy protection
-* Social engineering
-* Online scams and fraud
-
-The chatbot also includes **basic memory features**, **sentiment detection**, and **conversation flow handling** for a more interactive user experience.
+* Cybersecurity education
+* Sentiment-aware responses
+* Conversation memory
+* Randomised responses
+* Topic recognition
+* Voice greeting
+* ASCII art display
+* Modern WPF user interface
 
 ---
 
 # Features
 
-## 1. User Authentication / Greeting
+## User Registration
 
-* Users enter their name before starting a conversation.
-* Returning users are recognized using local text file storage.
-* Personalized greetings are displayed.
-
-### New User Example
-
-> Hey John, welcome to CyberSafe AI! 🛡️ I'm here to help you with cybersecurity. Ask me anything!
-
-### Returning User Example
-
-> Welcome back, John! Great to see you again.
+* Users enter their name before accessing the chatbot
+* Returning users are recognised
+* Usernames are stored locally in a text file
 
 ---
 
-## 2. Cybersecurity Knowledge Base
+## Cybersecurity Awareness
 
-The chatbot provides educational responses on various cybersecurity topics using **keyword recognition**.
+The chatbot provides information on:
 
-### Supported Topics
-
-* Passwords
+* Password safety
 * Phishing
 * Malware
-* VPN
+* VPNs
 * Firewalls
-* Privacy
-* Encryption
-* Backups
-* Data Breaches
-* Fraud
-* Scams
-* Software Updates
-* Social Engineering
-* Malicious Chatbots
-* Two-Factor Authentication (2FA)
-
-The system returns **randomized responses** for each topic to avoid repetitive conversations.
+* Identity theft
+* Public Wi-Fi safety
+* Authentication
+* Online scams
+* Privacy protection
+* Safe browsing
+* Ransomware
 
 ---
 
-## 3. Sentiment Detection
+## Sentiment Detection
 
-CyberSafe AI can detect user emotions and respond empathetically.
+The chatbot detects emotions such as:
 
-### Supported Emotions
-
+* Worried
 * Frustrated
 * Confused
-* Worried
-* Scared
-* Happy
-* Excited
-* Sad
 * Angry
 * Curious
+* Happy
+* Excited
 * Overwhelmed
 
-### Example
-
-**User:**
-
-> I'm worried about phishing emails.
-
-**Bot:**
-
-> I understand your concern. Let's make sure your information is secure.
+It responds with supportive and educational feedback.
 
 ---
 
-## 4. Conversation Flow / Follow-Up Support
+## Memory and Personalisation
 
-The chatbot remembers the **last cybersecurity topic discussed** and supports follow-up prompts.
+The chatbot:
 
-### Example
-
-**User:**
-
-> Tell me about phishing
-
-**Bot:**
-
-> Phishing uses fake messages or websites to trick you into revealing sensitive data.
-
-**User:**
-
-> Tell me more
-
-**Bot:**
-
-> Look out for urgent language, misspelled domains, and suspicious attachments.
-
-Supported follow-up phrases include:
-
-* Tell me more
-* Explain more
-* Give me another tip
-* More info
-* Elaborate
-* Continue
-* What else
+* Remembers usernames
+* Stores user interests
+* Recalls previous interests for returning users
+* Provides personalised responses
 
 ---
 
-## 5. User Interest Memory
+## Conversation Flow
 
-CyberSafe AI remembers topics users are interested in.
+The chatbot supports follow-up requests such as:
 
-### Example
-
-**User:**
-
-> I like VPN security
-
-The chatbot stores this information and recalls it during future sessions.
-
-### Example Recall
-
-> Last time you mentioned you were interested in: VPN security.
+* “Tell me more”
+* “Explain more”
+* “Another tip”
+* “Continue”
 
 ---
 
-## 6. Modern WPF User Interface
+## Voice Greeting
 
-The application uses a **modern dark-themed UI** built with WPF.
+A `.wav` audio greeting plays when the application starts.
 
-### UI Components
+---
 
-#### Welcome Screen
+## ASCII Art
 
-* Logo branding
-* Username input
-* Start Chat button
-
-#### Chat Screen
-
-* Chat bubbles
-* Bot avatar
-* Header with user status
-* Message input area
-* Send button
-* Auto-scrolling messages
-
-### Design Features
-
-* Dark mode aesthetic
-* Rounded corners
-* Styled buttons and textboxes
-* Responsive chat layout
-* User/bot message differentiation
+CyberSafe AI displays cybersecurity-themed ASCII art when launched.
 
 ---
 
 # Technologies Used
 
-* **Language:** C#
-* **Framework:** WPF (.NET)
-* **UI Markup:** XAML
-* **Architecture:** Event-driven desktop application
-* **Storage:** Local text files
+* C#
+* WPF (Windows Presentation Foundation)
+* .NET Framework
+* XAML
+* File Handling
+* Object-Oriented Programming (OOP)
 
 ---
 
 # Project Structure
 
 ```text
-CyberSecurityAwareness_pp2/
+CyberSecurityAwareness_pp2
 │
 ├── MainWindow.xaml
-│   ├── UI layout
-│   ├── Styles
-│   └── Chat interface
-│
 ├── MainWindow.xaml.cs
-│   ├── User input handling
-│   ├── Chat flow logic
-│   ├── Username management
-│   ├── Memory system
-│   └── Chat bubble rendering
-│
 ├── Respond.cs
-│   ├── Knowledge base
-│   ├── Sentiment detection
-│   ├── Keyword matching
-│   ├── Stop words
-│   └── Randomized responses
-│
+├── george.wav
 ├── user_names.txt
-│   └── Stores usernames
-│
 ├── interested_topic.txt
-│   └── Stores user interests
-│
 └── README.md
 ```
 
 ---
 
-# How the Application Works
+# How to Run the Project
 
-## Step 1: User Registration
+## Requirements
 
-The user enters their name on the welcome page.
-
-The system:
-
-1. Checks if the username exists in `user_names.txt`
-2. Saves new users
-3. Displays a personalized greeting
+* Visual Studio 2022
+* .NET Framework
+* Windows OS
 
 ---
 
-## Step 2: User Sends a Message
+## Steps
 
-The user types a cybersecurity-related question.
+1. Open Visual Studio
+2. Open the project solution
+3. Build the project
+4. Run the application using:
 
-Example:
-
-> What is phishing?
-
----
-
-## Step 3: Input Processing
-
-The chatbot processes the input in this order:
-
-### 1. Follow-up Detection
-
-Checks for continuation phrases such as:
-
-> Tell me more
-
-### 2. Interest Recognition
-
-Detects phrases like:
-
-* I like
-* I love
-* Interested
-
-### 3. Sentiment Detection
-
-Detects emotional cues:
-
-> worried, confused, frustrated
-
-### 4. Keyword Matching
-
-Matches cybersecurity topics.
-
-### 5. Default Response
-
-If no match is found:
-
-> I'm not sure I understand. Could you try rephrasing that?
-
----
-
-# Installation
-
-## Prerequisites
-
-Before running the project, ensure you have:
-
-* **Visual Studio 2022 or later**
-* **.NET Desktop Development workload**
-* **WPF support installed**
-
----
-
-## Steps to Run
-
-1. Clone or download the repository.
-
-```bash
-git clone https://github.com/your-username/CyberSecurityAwareness_pp2.git
+```text
+Ctrl + F5
 ```
 
-2. Open the solution in **Visual Studio**.
+OR click:
 
-3. Build the project:
-
-```bash
-Build → Build Solution
+```text
+Start
 ```
 
-4. Run the application:
+---
 
-```bash
-F5
-```
+# Example Questions
+
+Users can ask:
+
+* “Tell me about phishing”
+* “How do I create a strong password?”
+* “What is malware?”
+* “What does a VPN do?”
+* “I am worried about scams”
+* “Tell me more”
+
+---
+
+# Input Validation
+
+The chatbot validates:
+
+* Empty messages
+* Unknown inputs
+* Conversation flow
+* Username input
 
 ---
 
 # File Storage
 
-The chatbot stores user information locally.
+The application stores:
 
-## `user_names.txt`
-
-Stores usernames for returning user recognition.
-
-Example:
-
-```text
-John
-Sarah
-Mike
-```
-
-## `interested_topic.txt`
-
-Stores user interests.
-
-Example:
-
-```text
-John: vpn, cybersecurity
-Sarah: phishing, malware
-```
-
----
-
-# Example Questions to Ask
-
-Try asking:
-
-* What is phishing?
-* How do I create a strong password?
-* Tell me about malware
-* What is a VPN?
-* Explain social engineering
-* How can I stay safe online?
-* What should I do if I get hacked?
-* Tell me more
+* Usernames in `user_names.txt`
+* User interests in `interested_topic.txt`
 
 ---
 
 # Future Improvements
 
-Potential enhancements for the project:
+Possible future upgrades:
 
-* Database integration instead of text files
-* AI/NLP improvements
-* Better keyword matching
-* Voice interaction
-* Chat history persistence
-* User authentication system
-* Typing animation
-* Theme switching (light/dark mode)
-* Machine learning sentiment analysis
-
----
-
-# Known Limitations
-
-* Uses simple keyword matching instead of advanced AI.
-* Limited cybersecurity knowledge base.
-* Stores data in text files only.
-* Cannot understand complex sentence structures.
-* No internet connectivity or real-time threat updates.
+* Database integration
+* AI/NLP support
+* Speech recognition
+* Dark/light mode toggle
+* User authentication
+* More cybersecurity topics
 
 ---
 
 # Author
 
-Developed as a **Cybersecurity Awareness Chatbot project** using **C#, WPF, and XAML**.
+Developed for the Programming POE Project using C# and WPF.
 
 ---
-
-# License
-
-This project is for **educational purposes only**.
