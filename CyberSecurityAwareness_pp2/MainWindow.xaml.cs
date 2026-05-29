@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Media;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CyberSecurityAwareness_pp2
-{
+{//start of namespace
     public partial class MainWindow : Window
-    {
+    {//start of class
+
         // Chatbot engine
         private readonly Respond _bot = new Respond();
 
@@ -37,10 +30,10 @@ namespace CyberSecurityAwareness_pp2
             InitializeComponent();
             EnsureFiles();
 
-            // ✅ Play voice greeting when the app opens
+            //Play voice greeting when the app opens
             PlayVoiceGreeting();
 
-            // ✅ Show ASCII art in the chat on startup
+            //Show ASCII art in the chat on startup
             DisplayAsciiArt();
 
         }
@@ -54,17 +47,16 @@ namespace CyberSecurityAwareness_pp2
                 File.WriteAllText(InterestsFile, string.Empty);
         }
 
-        // ── VOICE GREETING ────────────────────────────────────────────────
-
+        //start of voice greeting class
         private void PlayVoiceGreeting()
         {
             // Get the project root folder (two levels up from \bin\Debug)
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string projectRoot = System.IO.Path.GetFullPath(
-                                       System.IO.Path.Combine(baseDirectory, @"..\..\"));
+            System.IO.Path.Combine(baseDirectory, @"..\..\"));
             string voiceFile = System.IO.Path.Combine(projectRoot, "george.wav");
 
-            // ✅ Actually call PlayVoice with the resolved path
+            //Actually call PlayVoice with the resolved path
             PlayVoice(voiceFile);
         }
 
@@ -77,32 +69,27 @@ namespace CyberSecurityAwareness_pp2
                     MessageBox.Show(
                         "Voice file not found at:\n" + voice +
                         "\n\nMake sure george.wav is in the project root folder.",
-                        "CyberSafe AI – Audio",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Warning);
+                        "CyberSafe AI – Audio",MessageBoxButton.OK,MessageBoxImage.Warning);
                     return;
                 }
 
                 using (SoundPlayer player = new SoundPlayer(voice))
                 {
                     player.Load();
-                    player.Play(); // ✅ Use Play() instead of PlaySync() so the UI doesn't freeze
+                    //Use Play() instead of PlaySync() so the UI doesn't freeze
+                    player.Play(); 
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Audio error: " + ex.Message,
-                                "CyberSafe AI – Audio",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
+                MessageBox.Show("Audio error: " + ex.Message,"CyberSafe AI – Audio",MessageBoxButton.OK,MessageBoxImage.Error);
             }
         }
 
-        // ── ASCII ART ─────────────────────────────────────────────────────
-
+        //start of ascii art class
         private void DisplayAsciiArt()
         {
-            // ✅ Show in the chat ListView instead of Console.WriteLine
+            //Show in the chat ListView instead of Console.WriteLine
             string art =
                 "==================================================\n" +
                 "   ____       _                 _   _            \n" +
@@ -142,8 +129,7 @@ namespace CyberSecurityAwareness_pp2
             chats.Items.Add(border);
         }
 
-        // ── USERNAME PAGE ────────────────────────────────────────────────
-
+        // username page
         // Allow Enter key to submit username
         private void UserName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -153,15 +139,14 @@ namespace CyberSecurityAwareness_pp2
 
         // Validate and register the username, then open chat
         private void submit_name(object sender, RoutedEventArgs e)
-        {
+        {//start of submit name method
+
             string name = user_name.Text.Trim();
 
+            //if statement to check if the user entered
             if (string.IsNullOrWhiteSpace(name))
             {
-                MessageBox.Show("Please enter your name before continuing.",
-                                "CyberSafe AI",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Warning);
+                MessageBox.Show("Please enter your name before continuing.","CyberSafe AI",MessageBoxButton.OK,MessageBoxImage.Warning);
                 return;
             }
 
@@ -171,36 +156,34 @@ namespace CyberSecurityAwareness_pp2
             if (!returning)
                 SaveName(name);
 
-            // Switch views
+            //Switch views
             name_grid.Visibility = Visibility.Hidden;
             chats_grid.Visibility = Visibility.Visible;
             header_user.Text = "👤 " + _username;
 
-            // Welcome message
+            //Welcome message
             string greeting = returning
                 ? "Welcome back, " + _username + "! Great to see you again. How can I help you stay safe online today?"
                 : "Hey " + _username + ", welcome to CyberSafe AI! 🛡️ I'm here to help you with cybersecurity. Ask me anything!";
 
             AddBotBubble(greeting);
 
-            // Recall stored interests for returning users
+            //Recall stored interests for returning users
             if (returning)
                 RecallInterests();
         }
 
-        
-        // ── CHAT PAGE ────────────────────────────────────────────────────
-
-        // Allow Enter key to send message
+        //Chat page
+        //Allow Enter key to send message
         private void Question_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
                 send(sender, e);
         }
 
-        // Main send handler
+        //Main send handler
         private void send(object sender, RoutedEventArgs e)
-        {
+        {//send method
             string input = question.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(input))
@@ -215,18 +198,17 @@ namespace CyberSecurityAwareness_pp2
             string response = ProcessInput(input);
             AddBotBubble(response);
 
-            // Auto-scroll to latest message
+            //Auto-scroll to latest message
             if (chats.Items.Count > 0)
                 chats.ScrollIntoView(chats.Items[chats.Items.Count - 1]);
         }
 
-        // ── INPUT PROCESSING ─────────────────────────────────────────────
-
+        //input processing
         private string ProcessInput(string input)
-        {
+        {//processinginput method
             string lower = input.ToLower();
 
-            // 1. Conversation flow: follow-up requests
+            //1.Conversation flow: follow-up requests
             if (IsFollowUp(lower))
             {
                 if (!string.IsNullOrEmpty(_lastTopic))
@@ -239,11 +221,11 @@ namespace CyberSecurityAwareness_pp2
                 return "Sure! What topic would you like me to elaborate on?";
             }
 
-            // 2. Memory: user expresses interest
+            //2.Memory: user expresses interest
             if (lower.Contains("interested") || lower.Contains("i like") || lower.Contains("i love"))
                 return HandleInterest(input);
 
-            // 3. Sentiment detection
+            //3.Sentiment detection
             string sentimentResponse = _bot.DetectSentiment(lower);
             if (!string.IsNullOrEmpty(sentimentResponse))
             {
@@ -256,7 +238,7 @@ namespace CyberSecurityAwareness_pp2
                 return sentimentResponse;
             }
 
-            // 4. Keyword matching
+            //4.Keyword matching
             string keywordResponse = _bot.MatchKeyword(lower, out string topic);
             if (!string.IsNullOrEmpty(keywordResponse))
             {
@@ -264,14 +246,14 @@ namespace CyberSecurityAwareness_pp2
                 return keywordResponse;
             }
 
-            // 5. Default fallback
+            //5.Default fallback
             return _bot.GetDefault();
         }
 
-        // ── INTEREST / MEMORY ────────────────────────────────────────────
-
+        //interest and memory
         private string HandleInterest(string input)
-        {
+        {//Handleinterest method
+
             string[] words = input.ToLower().Split(' ');
             var topics = new List<string>();
 
@@ -297,7 +279,8 @@ namespace CyberSecurityAwareness_pp2
         }
 
         private void RecallInterests()
-        {
+        {//RecallInterests method
+         
             if (!File.Exists(InterestsFile)) return;
 
             string[] lines = File.ReadAllLines(InterestsFile);
@@ -313,10 +296,10 @@ namespace CyberSecurityAwareness_pp2
             }
         }
 
-        // ── FOLLOW-UP DETECTION ──────────────────────────────────────────
-
+        //follow up detection
         private static bool IsFollowUp(string lower)
-        {
+        {//follow up method
+
             string[] followPhrases =
             {
                 "tell me more", "explain more", "give me another tip",
@@ -330,10 +313,9 @@ namespace CyberSecurityAwareness_pp2
             return false;
         }
 
-        // ── CHAT BUBBLE BUILDERS ─────────────────────────────────────────
-
+        //chat bubble
         private void AddUserBubble(string message)
-        {
+        {//start of chat bubble
             var panel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
@@ -360,7 +342,7 @@ namespace CyberSecurityAwareness_pp2
 
             panel.Children.Add(bubble);
             chats.Items.Add(panel);
-        }
+        }//end of chat bubble
 
         private void AddBotBubble(string message)
         {
@@ -413,8 +395,7 @@ namespace CyberSecurityAwareness_pp2
             chats.Items.Add(panel);
         }
 
-        // ── FILE HELPERS ─────────────────────────────────────────────────
-
+        //file helper
         private bool CheckName(string name)
         {
             string[] names = File.ReadAllLines(UsersFile);
@@ -425,9 +406,10 @@ namespace CyberSecurityAwareness_pp2
         }
 
         private void SaveName(string name)
-        {
+        {//start of savename
             File.AppendAllText(UsersFile, name.Trim() + "\n");
-        }
-    }
-}
+        }//end of savename method
+
+    }//end of class
+}//end of namespace
 

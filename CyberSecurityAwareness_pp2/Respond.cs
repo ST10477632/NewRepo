@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace CyberSecurityAwareness_pp2
-{
+{//start of namespace
     public class Respond
-    {
+    {//start of respond class
         // Random number generator
         private readonly Random _rng = new Random();
 
@@ -37,8 +36,7 @@ namespace CyberSecurityAwareness_pp2
             LoadStopWords();
         }
 
-        // ── PUBLIC API ────────────────────────────────────────────────────
-
+        //public api
         // Scan input for a known keyword and return a random matching response.
         // Also outputs the matched topic name for conversation-flow follow-ups.
         public string MatchKeyword(string input, out string matchedTopic)
@@ -46,7 +44,7 @@ namespace CyberSecurityAwareness_pp2
             matchedTopic = string.Empty;
             string lowerInput = input.ToLower();
 
-            // Pass 1: full phrase match first
+            //Pass 1: full phrase match first
             foreach (var entry in _responses)
             {
                 if (lowerInput.Contains(entry.Key.ToLower()))
@@ -56,7 +54,7 @@ namespace CyberSecurityAwareness_pp2
                 }
             }
 
-            // Pass 2: exact single word match only
+            //Pass 2: exact single word match only
             string[] words = lowerInput.Split(
                 new[] { ' ', ',', '.', '?', '!', '\n', '\r' },
                 StringSplitOptions.RemoveEmptyEntries);
@@ -75,7 +73,7 @@ namespace CyberSecurityAwareness_pp2
             return string.Empty;
         }
 
-        // Return a random response for a known topic (used for follow-ups)
+        //Return a random response for a known topic (used for follow-ups)
         public string GetResponse(string topic)
         {
             if (_responses.TryGetValue(topic, out List<string> list))
@@ -103,18 +101,16 @@ namespace CyberSecurityAwareness_pp2
         // Check if a word is a stop word
         public bool IsStopWord(string word) => _stopWords.Contains(word);
 
-        // ── PRIVATE HELPER ────────────────────────────────────────────────
-
+        //helper
         private string PickRandom(List<string> list)
         {
             if (list == null || list.Count == 0) return string.Empty;
             return list[_rng.Next(list.Count)];
         }
 
-        // ── RESPONSES ─────────────────────────────────────────────────────
-
+        //responses
         private void LoadResponses()
-        {
+        {//start of loadresponses
             Add("greeting",
                 "I'm doing well, thanks for asking! How are you doing today?",
                 "Hey there! Great to chat with you. How can I help you stay safe online?",
@@ -249,12 +245,11 @@ namespace CyberSecurityAwareness_pp2
                 "Malicious bots often create urgency to trick users into sharing sensitive information.",
                 "Fake chatbots may ask for passwords or payment details — legitimate services never do this.",
                 "Be cautious if a bot pressures you for personal data or makes unusual requests.");
-        }
+        }//end of responses
 
-        // ── SENTIMENTS ────────────────────────────────────────────────────
-
+        //sentiments
         private void LoadSentiments()
-        {
+        {//start of loadsentiments
             AddSentiment("frustrated",
                 "I understand you're frustrated. Let's work through this step by step — I'm here to help.",
                 "It's completely normal to feel that way. Take a breath; we'll sort this out together.",
@@ -304,12 +299,11 @@ namespace CyberSecurityAwareness_pp2
                 "It can feel like a lot at first. Let's take it one topic at a time — no rush.",
                 "Cybersecurity can seem complex, but I'll break it down simply for you.",
                 "Don't worry — I'll guide you through the important stuff step by step.");
-        }
+        }//end of sentiments
 
-        // ── STOP WORDS ────────────────────────────────────────────────────
-
+        //stop words
         private void LoadStopWords()
-        {
+        {//start of loadstopwords
             string[] stops =
             {
                 "a","about","above","across","after","again","against","all","almost","alone",
@@ -338,10 +332,9 @@ namespace CyberSecurityAwareness_pp2
 
             foreach (string s in stops)
                 _stopWords.Add(s);
-        }
+        }//end of stop words
 
-        // ── CONVENIENCE ADDERS ────────────────────────────────────────────
-
+        //convinience adders
         private void Add(string keyword, params string[] answers)
         {
             _responses[keyword] = new List<string>(answers);
@@ -351,5 +344,5 @@ namespace CyberSecurityAwareness_pp2
         {
             _sentiments[emotion] = new List<string>(answers);
         }
-    }
-}
+    }//end of respond class
+}//end of namespace
