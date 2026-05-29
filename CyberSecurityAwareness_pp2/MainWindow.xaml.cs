@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -28,6 +29,7 @@ namespace CyberSecurityAwareness_pp2
         // File paths
         private const string UsersFile = "user_names.txt";
         private const string InterestsFile = "interested_topic.txt";
+        private const string VoiceFile = "voice_greeting";
 
 
         public MainWindow()
@@ -90,6 +92,51 @@ namespace CyberSecurityAwareness_pp2
             // Recall stored interests for returning users
             if (returning)
                 RecallInterests();
+        }
+        
+        private void PlayVoiceGreeting()
+        {
+            string path_directory = AppDomain.CurrentDomain.BaseDirectory;
+            Console.WriteLine($"{path_directory}");
+            string recordPath = path_directory.Replace("\\bin\\Debug", "");
+            string voiceFile = System.IO.Path.Combine(recordPath, "george.wav");
+
+            
+        }
+        public static void PlayVoice(string voice)
+        {
+            try
+            {
+                if (!File.Exists(voice))
+                {
+                    Console.WriteLine("george.wav file not found.");
+                    return;
+                }
+
+                using (SoundPlayer speechObj = new SoundPlayer(voice))
+                {
+                    speechObj.Load();
+                    speechObj.PlaySync();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Audio error: " + e.Message);
+            }
+        }
+
+        private void DisplayAsciiArt()
+        {
+            Console.WriteLine(@"
+            ==================================================
+               ____       _                 _   _             
+              / ___|  ___| |__   ___   ___ | |_(_) ___  _ __  
+              \___ \ / __| '_ \ / _ \ / _ \| __| |/ _ \| '_ \ 
+               ___) | (__| | | | (_) | (_) | |_| | (_) | | | |
+              |____/ \___|_| |_|\___/ \___/ \__|_|\___/|_| |_|
+
+                ****** CYBERSECURITY AWARENESS BOT ******
+            ==================================================");
         }
 
         // ── CHAT PAGE ────────────────────────────────────────────────────
